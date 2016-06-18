@@ -1,0 +1,14 @@
+{
+    "perl"         : "6.c",
+    "name"         : "Log::Simple",
+    "version"      : "0.01",
+    "description"  : "Simple logging, with customizable displays and labels.",
+    "depends"      : [ ],
+    "test-depends" : [ "Test" ],
+    "provides"     : {
+        "Log::Simple": "lib/Log/Simple.pm6"
+    },
+    "authors"      : [ "Steve Bertrand" ],
+    "support"      : { "source"   : "git://github.com/stevieb9/p6-log-simple.git" }
+}
+
