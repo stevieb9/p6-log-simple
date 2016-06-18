@@ -2,8 +2,9 @@ use v6;
 
 unit class Log::Simple;
 
-my @levels =  <_0 _1 _2 _3 _4 _5 _6 _7>;
-
-method one() { 
-    say 1; 
+method new {
+    for <foo bar> -> $y {
+        self.^add_method($y, method (Int $x) { say $x; });
+    }
+    return self.bless;
 }
