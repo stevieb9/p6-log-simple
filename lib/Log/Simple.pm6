@@ -11,6 +11,16 @@ method new {
 method labels (*@labels) {
     die "labels() requires exactly 8 labels sent in" if @labels.elems != 8;
 }
+
+method !add-method (Str $label) {
+    # dynamically adds the logging methods
+    self.^add_method(
+        $label, 
+        method (Str $msg) {
+            $msg.say;
+        }    
+    );
+}
 method !default-labels {
     return LEVELS.map(-> $lvl { '_'~$lvl });
 }
@@ -18,12 +28,4 @@ method !generate-log-methods (*@labels) {
     for @labels -> $label {
         self!add-method($label);
     }
-}
-method !add-method (Str $label) {
-    self.^add_method(
-        $label, 
-        method (Str $msg) {
-            $msg.say;
-        }    
-    );
 }
