@@ -3,7 +3,7 @@ use v6;
 use Log::Simple;
 use Test;
 
-{ # list count
+subtest { # arg count
 
     my $l = Log::Simple.new;
 
@@ -18,6 +18,7 @@ use Test;
     # 8 args exactly
 
     lives-ok { $l.labels(0..7) }, "labels() with proper arg count ok";
-}
+
+}, 'listen() arg count';
 
 done-testing;
