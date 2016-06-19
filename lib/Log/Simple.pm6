@@ -2,15 +2,22 @@ use v6;
 
 unit class Log::Simple;
 
-constant NUM-LEVELS = 7;
+my constant LEVELS = (0..7);
 
 method new {
-    for self!sub-names -> $y {
-        self.^add_method($y, method (Int $x) { say $x; });
-    }
+    self!generate-log-methods(self!default-method-names);
     return self.bless;
 }
-
-method !sub-names {
-    return (0..NUM-LEVELS).map(-> $lvl {'_'~$lvl});
+method !default-method-names {
+    return LEVELS.map(-> $lvl { '_'~$lvl });
+}
+method !generate-log-methods (*@labels) {
+    for @labels -> $label {
+        self.^add_method(
+            $label, 
+            method (Str $msg) {
+                $msg.say;
+            }    
+        );
+    }
 }
