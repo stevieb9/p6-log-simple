@@ -2,16 +2,41 @@ use v6;
 
 use Log::Simple;
 use Test;
+use Test::Mock;
 
-use-ok 'Log::Simple';
+subtest {
+    use-ok 'Log::Simple';
 
-my $l = Log::Simple.new;
+    my $l = Log::Simple.new;
 
-can-ok $l, 'labels';
+    can-ok $l, 'labels';
 
-dies-ok { $l.default-labels }, "default-labels() is private";
-dies-ok { $l.generate-log-methods }, "generate-log-methods() is private";
+}, 'load/can';
 
-is $l.^methods.elems, 10, "obj has proper method count";
+subtest {
+    my $l = Log::Simple.new;
+    
+    dies-ok { $l.default-labels }, "default-labels() is private";
+    dies-ok { $l.generate-log-methods }, "generate-log-methods() is private";
+
+}, 'private methods';
+
+subtest {
+    my $l = Log::Simple.new;
+    
+    is $l.^methods.elems, 10, "obj has proper method count";
+
+}, 'method count';
+
+subtest {
+    my $l = mocked(Log::Simple);
+
+    check-mock {
+        $l,
+        *.called('default-labels'),
+        *.called('generate-log-methods');
+    };
+
+}, 'proper call chain';
 
 done-testing;

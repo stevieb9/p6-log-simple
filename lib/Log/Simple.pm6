@@ -13,7 +13,6 @@ method labels (*@labels) {
 }
 
 method !add-method (Str $label) {
-    # dynamically adds the logging methods
     self.^add_method(
         $label, 
         method (Str $msg) {
