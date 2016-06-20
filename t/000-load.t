@@ -27,7 +27,7 @@ subtest {
         push @methods, .gist;
     }
              
-    for <log labels FALLBACK> -> $m {
+    for <log labels level FALLBACK> -> $m {
         can-ok $l, $m;
 
         is
@@ -35,7 +35,7 @@ subtest {
             True,
             "$m method ok";
     }          
-    is $l.^methods.elems, 3, "obj has proper method count";
+    is $l.^methods.elems, 4, "obj has proper method count";
 
 }, 'public methods';
 
