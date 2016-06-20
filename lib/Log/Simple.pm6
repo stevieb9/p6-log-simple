@@ -6,6 +6,7 @@ my constant LEVELS = (0..7);
 
 has Bool $!disabled = False;
 has Int $!log-only = -1;
+has Bool $!print = True;
 has Int $!set-level = 4;
 
 method FALLBACK($name, $s) {
@@ -25,9 +26,14 @@ method FALLBACK($name, $s) {
 }
 
 method log ($lvl, $msg) { 
+    return if $!disabled;
     say "$lvl: $msg";
 }
 
+method print (Bool $print?) {
+    return $!print if ! defined $print;
+    $!print = $print;
+}
 method labels (*@labels) {
     die "labels() requires exactly 8 labels sent in" if @labels.elems != 8;
 }
@@ -54,7 +60,6 @@ method level ($level?) {
             $!log-only = -1;
             $!set-level = $level;
         }
-
         return $!set-level;
     }
 }
