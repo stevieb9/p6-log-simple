@@ -3,7 +3,7 @@
     "name"         : "Log::Simple",
     "version"      : "0.01",
     "description"  : "Simple logging, with customizable displays and labels.",
-    "depends"      : [ ],
+    "depends"      : [ 'IO::Capture::Simple' ],
     "test-depends" : [ "Test", "Test::Mock" ],
     "provides"     : {
         "Log::Simple": "lib/Log/Simple.pm6"

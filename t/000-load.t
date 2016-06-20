@@ -9,34 +9,34 @@ subtest {
 
     my $l = Log::Simple.new;
 
-    can-ok $l, 'labels';
-
-}, 'load/can';
+}, 'load';
 
 subtest {
     my $l = Log::Simple.new;
     
     dies-ok { $l.default-labels }, "default-labels() is private";
-    dies-ok { $l.generate-log-methods }, "generate-log-methods() is private";
 
 }, 'private methods';
 
 subtest {
     my $l = Log::Simple.new;
+  
+    my @methods;
     
-    is $l.^methods.elems, 10, "obj has proper method count";
+    for $l.^methods {
+        push @methods, .gist;
+    }
+             
+    for <log labels FALLBACK> -> $m {
+        can-ok $l, $m;
 
-}, 'method count';
+        is
+            so $m eq any(@methods),
+            True,
+            "$m method ok";
+    }          
+    is $l.^methods.elems, 3, "obj has proper method count";
 
-subtest {
-    my $l = mocked(Log::Simple);
-
-    check-mock {
-        $l,
-        *.called('default-labels'),
-        *.called('generate-log-methods');
-    };
-
-}, 'proper call chain';
+}, 'public methods';
 
 done-testing;
