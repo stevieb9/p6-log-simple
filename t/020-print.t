@@ -26,3 +26,4 @@ subtest {
 
 }, '2nd instance print default ok';
 
+done-testing;

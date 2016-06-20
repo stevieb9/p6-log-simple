@@ -15,3 +15,5 @@ subtest {
     is $l.level, -1, 'setting level to -1 ok';
 
 }, 'level';
+
+done-testing;
