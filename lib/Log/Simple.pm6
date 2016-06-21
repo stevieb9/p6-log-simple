@@ -1,69 +1,31 @@
 use v6;
 
-unit class Log::Simple;
-
 my constant LEVELS = (0..7);
 
-has Bool $!disabled = False;
-has Int $!log-only = -1;
-has Bool $!print = True;
-has Int $!set-level = 4;
+my Bool $enabled = True;
+my Int $min-level = 0;
+my Int $max-level = 7;
 
-method FALLBACK($name, $s) {
-    # auto-gen the _N() methods
-
-    if ($name ~~ / _ (\d) /) {
-        my $level = $0;
-
-        die "default log methods are _0() to _7()" if $level > 7;
-
-        self.^add_method($name, method (Str $msg) {
-            self.log($level, $msg)
-        });
-        self.^compose();
-        self."_$level"($s);
-    }
+sub log($level, *@msg) {
+	return unless $enabled;
+	return if $min-level > $level || $level > $max-level;
+	put("$level: ", $_) for @msg;
 }
 
-method log ($lvl, $msg) { 
-    return if $!disabled;
-    say "$lvl: $msg";
-}
+multi sub min-level (Int $new-level) { $min-level = $new-level }
+multi sub min-level ()               { $min-level }
+                                     
+multi sub max-level (Int $new-level) { $max-level = $new-level }
+multi sub max-level ()               { $max-level }
 
-method print (Bool $print?) {
-    return $!print if ! defined $print;
-    $!print = $print;
-}
-method labels (*@labels) {
-    die "labels() requires exactly 8 labels sent in" if @labels.elems != 8;
-}
-
-method level ($level?) {
-
-    if ! defined $level {
-        return $!set-level;
-    }
-
-    if defined $level {
-        die "$level is invalid\n" if $level !~~ /^('-'||'=')?\d+$/;
-
-        if $level ~~ /^'-'/ {
-            $!set-level = -1;
-            $!disabled = True;
-        }
-        elsif ($level ~~ /^'='(\d+)$/) {
-            $!log-only = $0;
-           
-        }
-        else {
-            $!disabled = False;
-            $!log-only = -1;
-            $!set-level = $level;
-        }
-        return $!set-level;
-    }
-}
-
-method !default-labels {
-    return LEVELS.map(-> $lvl { '_'~$lvl });
+sub EXPORT {
+	my Map $ret-map = Map.new(
+		(("&log" xx * Z~ LEVELS) Z=> LEVELS.map: { &log.assuming($_) } ),
+		"&disable-logging" => sub { $enabled = False },
+		"&enable-logging" => sub { $enabled = True },
+		"&min-log-level" => &min-level, 
+		"&max-log-level" => &max-level,
+	);
+#	dd $ret-map;
+	$ret-map;
 }
