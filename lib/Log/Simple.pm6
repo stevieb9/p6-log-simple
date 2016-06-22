@@ -11,7 +11,7 @@ my $log-only = False;
 my $stdout = True;
 my @stream = $*OUT;
 
-sub log($level, Str $msg) {
+sub log($level, *@msg) {
 	return unless $enabled;
     
     if ($log-only !~~ Bool && $level != $log-only) {
