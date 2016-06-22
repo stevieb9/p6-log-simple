@@ -8,19 +8,19 @@ use Log::Simple;
 
 ok &log0 ~~ Callable, 'imported `log0`';
 ok &log7 ~~ Callable, 'imported  `log1`';
-ok &disable-logging ~~ Callable, 'imported `disable-logging`';
-ok &enable-logging ~~ Callable, 'imported `enable-logging`';
+ok &disable-log ~~ Callable, 'imported `disable-logging`';
+ok &enable-log~~ Callable, 'imported `enable-logging`';
 ok &min-log-level ~~ Callable, 'imported `min-log-level`';
 ok &max-log-level ~~ Callable, 'imported `max-max-level`';
 
 log0 "foo";
 log7 "bar";
 
-disable-logging;
+disable-log;
 
 log0 "silent";
 
-enable-logging;
+enable-log;
 
 log0 "loud";
 

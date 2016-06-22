@@ -31,3 +31,5 @@ $out = capture_stdout { $ret = log0('re-disabled'); };
 
 is $out, Any, 'log-stdout() re-disabled ok';
 is $ret, "re-disabled", "log-stdout() returns only, with no newline";
+
+done-testing;

@@ -28,3 +28,5 @@ throws-like { EVAL 'log8 "die"' }, Exception, message => /Undeclared\sroutine/;
 
 # min-log-level 3;
 # max-log-level ( min-log-level() + 1);
+
+done-testing;
