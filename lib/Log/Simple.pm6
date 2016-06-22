@@ -7,7 +7,7 @@ my Int $min-level = 0;
 my Int $max-level = 7;
 my Bool $stdout = True;
 
-sub log($level, Str $msg) {
+sub log($level, *@msg) {
 	return unless $enabled;
 	return if $min-level > $level || $level > $max-level;
 
